@@ -14,6 +14,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import domain.TableObject;
+
 /**
  * @author muddana_m
  *
@@ -52,10 +54,8 @@ public class FetchDatabaseMetaData {
 		return result;
 	}
 	
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
+	public List<TableObject> getSchemaDefinitions() {
+		List<TableObject> schemaObjects = new ArrayList<TableObject>();
 		
 		Connection con = null;;
 		try {
@@ -81,19 +81,28 @@ public class FetchDatabaseMetaData {
 				logger.info("Database Version: " + metadata.getDatabaseProductVersion());
 				
 				ResultSet rsTables = metadata.getTables("virtualgoods", "", "", types );
-				List<String> tableNames = new ArrayList<String>();
+				
 				while (rsTables.next()) {
+					TableObject table = new TableObject();
 					logger.info(rsTables.getString("TABLE_NAME"));
-					tableNames.add(rsTables.getString("TABLE_NAME"));
+					table.setTableName(rsTables.getString("TABLE_NAME"));
 					
 					ResultSet rsCols = metadata.getColumns(null, null, rsTables.getString("TABLE_NAME"), null);
 					
+					List<String> fields = new ArrayList<String>();
 					logger.info("Printing Column Names and Types -------------: ");
 					while (rsCols.next()) {
 						logger.info(rsCols.getString("COLUMN_NAME") + " - " + rsCols.getString("TYPE_NAME"));
 						
+						fields.add(rsCols.getString("COLUMN_NAME"));
+						
 					}
+					
+					table.setFields(fields);
+					schemaObjects.add(table);
 				}
+				
+				
 				
 			}
 			
@@ -102,6 +111,7 @@ public class FetchDatabaseMetaData {
 			e.printStackTrace();
 		}
 		
+		return schemaObjects;
 	}
 
 }

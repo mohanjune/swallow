@@ -33,9 +33,6 @@ import cassatte.FetchDatabaseMetaData;
  * @author muddana_m
  *
  */
-
-
-
 public class MainAppWindow extends Application  {
 
 	final static Logger logger = LoggerFactory.getLogger(MainAppWindow.class );

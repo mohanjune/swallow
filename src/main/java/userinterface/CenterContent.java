@@ -6,7 +6,6 @@ package userinterface;
 import java.util.List;
 
 import javafx.geometry.Insets;
-import javafx.scene.Group;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -15,6 +14,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import cassatte.FetchDatabaseMetaData;
+import domain.TableObject;
 
 /**
  * @author muddana_m
@@ -33,7 +34,25 @@ public class CenterContent {
 		title.setFont(Font.font("Arial", FontWeight.BLACK, 14));
 		gridPane.add(title, 0 , 1);
 		
-		gridPane.add(addVBox(tableName, columnNames), 0, 5);
+		
+		/**
+		 * Get Database Schema and add it to VBOX
+		 * 
+		 */
+		
+		FetchDatabaseMetaData metaInfo = new FetchDatabaseMetaData();
+		List<TableObject> metaInfos =  metaInfo.getSchemaDefinitions();
+		
+		int i = 0, j = 5;
+		for (TableObject meta : metaInfos) {
+			gridPane.add(addVBox(meta.getTableName(), meta.getFields()), i, j);
+			i = i + 10;
+			j = meta.getFields().size();
+
+			if (i >= 1100) {
+				i = 0;
+			}
+		}
 			
 		return gridPane;
 	}
