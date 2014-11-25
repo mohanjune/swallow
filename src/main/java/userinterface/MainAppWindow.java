@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
@@ -38,7 +39,11 @@ public class MainAppWindow extends Application  {
 	final static Logger logger = LoggerFactory.getLogger(MainAppWindow.class );
 	
 	public void start(Stage primaryStage) {
+		ScrollPane scroll = new ScrollPane();
 		BorderPane borderPane = new BorderPane();
+		
+		scroll.setContent(borderPane);
+	
 		borderPane.setTop(addHbox(primaryStage));
 		
 		List<String> names = new ArrayList<String>();
@@ -49,7 +54,9 @@ public class MainAppWindow extends Application  {
 		CenterContent centerContent = new CenterContent();
 		borderPane.setCenter(centerContent.getCenterContent("Line Orders", names));
 		
-		Scene scene = new Scene(borderPane, 1200, 600);
+		scroll.setContent(borderPane);
+		Scene scene = new Scene(scroll, 1200, 600);
+		
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Cassatte MySQL to Cassandra");
 		primaryStage.show();

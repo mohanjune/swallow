@@ -47,7 +47,7 @@ public class CenterContent {
 		for (TableObject meta : metaInfos) {
 			gridPane.add(addVBox(meta.getTableName(), meta.getFields()), i, j);
 			i = i + 10;
-			j = meta.getFields().size();
+			//j = meta.getFields().size();
 
 			if (i >= 1100) {
 				i = 0;
@@ -62,6 +62,7 @@ public class CenterContent {
 		VBox vbox = new VBox();
 		vbox.setPadding(new Insets(10));
 		vbox.setSpacing(5);
+		vbox.setMaxHeight(columnNames.size());
 		vbox.setStyle("-fx-border-color: black;");
 		Text title = new Text(tableName);
 		title.setFont(Font.font("Arial", FontWeight.BLACK, 11));
@@ -74,6 +75,8 @@ public class CenterContent {
 			
 			Label name = new Label(colName);
 			name.setMinWidth(100.00);
+			name.setPrefHeight(columnNames.size());
+			name.setMaxHeight(columnNames.size());
 			hbox.getChildren().add(name);
 			hbox.getChildren().add(new CheckBox());
 			
