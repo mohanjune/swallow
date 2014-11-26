@@ -46,13 +46,8 @@ public class MainAppWindow extends Application  {
 	
 		borderPane.setTop(addHbox(primaryStage));
 		
-		List<String> names = new ArrayList<String>();
-		names.add("orderId");
-		names.add("customerName");
-		names.add("address");
-		names.add("totalPrice");
 		CenterContent centerContent = new CenterContent();
-		borderPane.setCenter(centerContent.getCenterContent("Line Orders", names));
+		borderPane.setCenter(centerContent.getCenterContent());
 		
 		scroll.setContent(borderPane);
 		Scene scene = new Scene(scroll, 1200, 600);

@@ -5,9 +5,12 @@ package userinterface;
 
 import java.util.List;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -15,6 +18,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import cassatte.FetchDatabaseMetaData;
+import domain.FieldsSelection;
 import domain.TableObject;
 
 /**
@@ -24,7 +28,7 @@ import domain.TableObject;
 public class CenterContent {
 	
 	
-	public GridPane getCenterContent(String tableName, List<String> columnNames) {
+	public GridPane getCenterContent() {
 		GridPane gridPane = new GridPane();
 		gridPane.setHgap(10);
 		gridPane.setVgap(10);
@@ -45,7 +49,11 @@ public class CenterContent {
 		
 		int i = 0, j = 5;
 		for (TableObject meta : metaInfos) {
+
 			gridPane.add(addVBox(meta.getTableName(), meta.getFields()), i, j);
+			
+			TableView view = createTableView(meta.getFields());
+			
 			i = i + 10;
 			//j = meta.getFields().size();
 
@@ -60,7 +68,7 @@ public class CenterContent {
 	
 	public VBox addVBox(String tableName, List<String> columnNames) {
 		VBox vbox = new VBox();
-		vbox.setPadding(new Insets(10));
+		vbox.setPadding(new Insets(5));
 		vbox.setSpacing(5);
 		vbox.setMaxHeight(columnNames.size());
 		vbox.setStyle("-fx-border-color: black;");
@@ -70,8 +78,8 @@ public class CenterContent {
 			
 		for (String colName: columnNames) {
 			HBox hbox = new HBox();
-			hbox.setPadding(new Insets(5));
-			hbox.setSpacing(5);
+			hbox.setPadding(new Insets(3));
+			hbox.setSpacing(3);
 			
 			Label name = new Label(colName);
 			name.setMinWidth(100.00);
@@ -83,6 +91,25 @@ public class CenterContent {
 			vbox.getChildren().add(hbox);
 		}
 		return vbox;
+	}
+	
+	
+	public ObservableList<FieldsSelection> populateSchemaView(List<String> columnNames) {
+		ObservableList<FieldsSelection> fields = FXCollections.observableArrayList();
+		
+		for (String field: columnNames) {
+			fields.add(new FieldsSelection(true, field));
+		}
+		
+		return fields;
+	}
+	
+	
+	public TableView createTableView(List<String> columnNames) {
+		TableView tableView = new TableView();
+		
+		
+		return tableView;
 	}
 }
 
