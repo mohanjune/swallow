@@ -3,6 +3,13 @@
  */
 package domain;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+
 /**
  * @author muddana_m
  *
@@ -11,37 +18,45 @@ package domain;
  */
 public class FieldsSelection {
 	
-	boolean selected;
-	String fieldName;
-	String fieldType;
+	BooleanProperty selected;
+	StringProperty fieldName;
+	StringProperty fieldType;
 	
 	public FieldsSelection(boolean selected, String fieldName) {
-		this.selected = selected;
-		this.fieldName = fieldName;
+		this.selected = new SimpleBooleanProperty(selected);
+		this.fieldName = new SimpleStringProperty(fieldName);
+
+	    this.selected.addListener(new ChangeListener<Boolean>() {
+	    	 
+	        public void changed(ObservableValue<? extends Boolean> ov, Boolean t, Boolean t1) {
+	
+	            System.out.println(fieldName + " selected: " + t1);
+	
+	        }
+	
+	    });     
+
 	}
 	
-	public boolean isSelected() {
+	public BooleanProperty selectedProperty() {
 		return selected;
 	}
 
-	public void setSelected(boolean selected) {
-		this.selected = selected;
-	}
 	
-	public String getFieldName() {
+	public StringProperty getFieldName() {
 		return fieldName;
 	}
-	
+
 	public void setFieldName(String fieldName) {
-		this.fieldName = fieldName;
+		this.fieldName.set(fieldName);
 	}
-	
-	public String getFieldType() {
+
+	public StringProperty getFieldType() {
 		return fieldType;
 	}
-	
+
 	public void setFieldType(String fieldType) {
-		this.fieldType = fieldType;
+		this.fieldType.set(fieldType);
 	}
 	
 }
