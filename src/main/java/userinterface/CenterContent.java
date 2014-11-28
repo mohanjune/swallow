@@ -5,6 +5,9 @@ package userinterface;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -33,6 +36,7 @@ import domain.TableObject;
  */
 public class CenterContent {
 	
+	final static Logger logger = LoggerFactory.getLogger(CenterContent.class);
 	
 	public GridPane getCenterContent() {
 		GridPane gridPane = new GridPane();
@@ -53,30 +57,37 @@ public class CenterContent {
 		FetchDatabaseMetaData metaInfo = new FetchDatabaseMetaData();
 		List<TableObject> metaInfos =  metaInfo.getSchemaDefinitions();
 		
-		
+		int initialHeight = 5;
+        int columnPosition = 0;
+        int secondRowPos = 5; 
 		for (TableObject meta : metaInfos) {
-	        VBox vbox = createVBox(meta.getFields());
-	        VBox outerBox = new VBox();
-	        
-	        Text tableName = new Text(meta.getTableName());
-	        tableName.setFont(Font.font("Arial", FontWeight.BLACK, 11));
-	        outerBox.getChildren().add(tableName);
-	        outerBox.getChildren().add(vbox);
-	        gridPane.add(outerBox, 0, meta.getFields().size() + 5);
+			
+	        VBox vbox = createVBox(meta.getTableName(), meta.getFields());
+	        if (initialHeight <= 13) {
+	        	gridPane.add(vbox, columnPosition, initialHeight);
+	        } else {
+	        	columnPosition = 2;
+	        	gridPane.add(vbox, columnPosition, secondRowPos);
+		        secondRowPos ++;
+	        }
+	        initialHeight ++;
 		}
 			
 		return gridPane;
 	}
 	
-	public VBox createVBox(List<String> fields) {
+	public VBox createVBox(String tableName, List<String> fields) {
 		VBox box = new VBox();
-
+		int fieldsLength = 0;
 		ObservableList<FieldsSelectionJava> obsrvfields = populateSchemaView(fields);
-		int fieldsLength = obsrvfields.size();
-		if (fieldsLength <= 10) {
-			box.setPrefHeight(obsrvfields.size() * 30);
-		} else {
-			box.setPrefHeight(obsrvfields.size() * 20);
+		fieldsLength = obsrvfields.size();
+		
+		if (fieldsLength <= 5) {
+			box.setPrefHeight(fieldsLength * 40);
+		} else if (fieldsLength > 5 && fieldsLength <= 15) {
+			box.setPrefHeight(fieldsLength * 20);
+		} else if (fieldsLength > 10){
+			box.setPrefHeight(fieldsLength * 10);
 		}
 		
 		/**
@@ -106,7 +117,9 @@ public class CenterContent {
 		
         tableView.setEditable(true);
 
+
         /** Add columns to tableView */
+        
         tableView.getColumns().addAll(selectedCol, fieldNameCol);
         
         CheckBox cb =  new CheckBox("Select all");
@@ -127,7 +140,10 @@ public class CenterContent {
             }
         });
 
-        box.getChildren().addAll(cb, tableView);      
+        Text textName = new Text(tableName);
+        textName.setFont(Font.font("Verdana", FontWeight.BLACK, 11));
+
+        box.getChildren().addAll(textName, cb, tableView);      
 		return box;
 	}
 	

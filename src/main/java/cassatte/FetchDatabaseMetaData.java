@@ -84,15 +84,15 @@ public class FetchDatabaseMetaData {
 				
 				while (rsTables.next()) {
 					TableObject table = new TableObject();
-					logger.info(rsTables.getString("TABLE_NAME"));
+					//logger.info(rsTables.getString("TABLE_NAME"));
 					table.setTableName(rsTables.getString("TABLE_NAME"));
 					
 					ResultSet rsCols = metadata.getColumns(null, null, rsTables.getString("TABLE_NAME"), null);
 					
 					List<String> fields = new ArrayList<String>();
-					logger.info("Printing Column Names and Types -------------: ");
+					//logger.info("Printing Column Names and Types -------------: ");
 					while (rsCols.next()) {
-						logger.info(rsCols.getString("COLUMN_NAME") + " - " + rsCols.getString("TYPE_NAME"));
+						//logger.info(rsCols.getString("COLUMN_NAME") + " - " + rsCols.getString("TYPE_NAME"));
 						
 						fields.add(rsCols.getString("COLUMN_NAME"));
 						

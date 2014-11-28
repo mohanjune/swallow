@@ -36,7 +36,7 @@ import cassatte.FetchDatabaseMetaData;
  */
 public class MainAppWindow extends Application  {
 
-	final static Logger logger = LoggerFactory.getLogger(MainAppWindow.class );
+	final static Logger logger = LoggerFactory.getLogger(MainAppWindow.class);
 	
 	public void start(Stage primaryStage) {
 		ScrollPane scroll = new ScrollPane();
